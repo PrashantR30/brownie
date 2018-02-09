@@ -1,2 +1,2 @@
-AWS_ACCESS_KEY = "AKIAI2WTRPHJGWSPLDAQ"
-AWS_SECRET_KEY = "m+GzNdgKpOjO/NsmGnKZs0EtpFirKOFIG16ubkaq"
+AWS_ACCESS_KEY = "Add your account's Access Key here"
+AWS_SECRET_KEY = "Add your account's Secret Key here"
