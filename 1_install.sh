@@ -1,14 +1,10 @@
 #!/bin/bash
-
-## Please read changelog.md for changes made to this scipt
-##
-
-
 ## Run the following on an Debian 9 to install the basic tools to deploy the infrastructure
+## Please read changelog.md for changes made to this scipt
 
-# Setting up variables
-
-apt-get -y install jq unzip git ansible
+# Updating repository and installing the required packages with apt
+ 
+apt-get update && apt-get -y install jq unzip git ansible
 
 # Setting terraform url variable
 terraform_url=$(curl https://releases.hashicorp.com/index.json | jq '{terraform}' | egrep "linux.*amd64" | sort --version-sort -r | head -1 | awk -F[\"] '{print $4}')
