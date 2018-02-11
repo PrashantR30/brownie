@@ -1,29 +1,31 @@
+# Defines all Variables to be used in the infrastructure
 variable "aws_region" {
-  description = "Region for the Setup"
-  default = "us-east-1"
+    description = "Region for the Setup"
+    default = "us-east-1"
 }
 
 variable "ami" {
-  description = "Amazon Linux 2 (as per requirements) "
-  default = "ami-6d263d09"
+    description = "Amazon Linux 2 (as per requirements) "
+    default = "ami-6d263d09"
 }
 
 variable "key_path" {
-  description = "SSH Public Key path (generated)"
-  default = "/root/.ssh/brownie_rsa.pub"
+    description = "SSH Public Key path (generated)"
+    default = "/root/.ssh/id_brownie_rsa.pub"
 }
  
 variable "vpc_cidr" {
-  description = "CIDR for the VPC"
-  default = "10.0.0.0/16"
+    description = "CIDR for the VPC"
+    default = "10.0.0.0/16"
 }
  
 variable "public_subnet_cidr" {
-  description = "CIDR for the public subnet"
-  default = "10.0.1.0/24"
+    description = "CIDR for the public subnet"
+    default = "10.0.1.0/24"
 }
  
 variable "private_subnet_cidr" {
-  description = "CIDR for the private subnet"
-  default = "10.0.2.0/24"
+    description = "CIDR for the private subnet"
+    default = "10.0.2.0/24"
 }
+
