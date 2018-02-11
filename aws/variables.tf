@@ -1,7 +1,7 @@
 # Defines all Variables to be used in the infrastructure
 variable "aws_region" {
     description = "Region for the Setup"
-    default = "us-east-1"
+    default = "eu-west-2"
 }
 
 variable "ami" {
