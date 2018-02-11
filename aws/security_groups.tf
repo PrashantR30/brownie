@@ -1,4 +1,4 @@
-# Define the security group for public subnet
+# Define the security group for WebNode
 
 resource "aws_security_group" "web_access" {
     name = "Web_Node_Security_Group"
@@ -44,9 +44,45 @@ resource "aws_security_group" "web_access" {
         cidr_blocks = ["0.0.0.0/0"]
     }
 
-    # Tagging the SG
     vpc_id="${aws_vpc.default.id}"
+
+    # Tagging the SG
     tags {
         Name = "Web Node Security Group"
+    }
+}
+
+
+
+# Adding Security Group for DB Node
+resource "aws_security_group" "db_access"{
+    name = "DB_Node_Security_Group"
+    description = "Allow traffic from WebNode with the Public Subnet"
+
+    ingress {
+        from_port = 22
+        to_port = 22
+        protocol = "tcp"
+        cidr_blocks = ["${var.public_subnet_cidr}"]
+    }
+ 
+    ingress {
+        from_port = 3306
+        to_port = 3306
+        protocol = "tcp"
+        cidr_blocks = ["${var.public_subnet_cidr}"]
+    }
+ 
+    ingress {
+        from_port = -1
+        to_port = -1
+        protocol = "icmp"
+        cidr_blocks = ["${var.public_subnet_cidr}"]
+    }
+ 
+    vpc_id = "${aws_vpc.default.id}"
+
+    tags {
+        Name = "DB Node Security Group"
     }
 }
