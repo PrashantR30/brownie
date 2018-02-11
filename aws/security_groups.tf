@@ -54,9 +54,9 @@ resource "aws_security_group" "web_access" {
 
 
 
-# Adding Security Group for DB Node
-resource "aws_security_group" "db_access"{
-    name = "DB_Node_Security_Group"
+# Adding Security Group for Docker Node
+resource "aws_security_group" "docker_access"{
+    name = "Docker_Node_Security_Group"
     description = "Allow traffic from WebNode with the Public Subnet"
 
     ingress {
@@ -67,12 +67,26 @@ resource "aws_security_group" "db_access"{
     }
  
     ingress {
-        from_port = 3306
-        to_port = 3306
+        from_port = 80
+        to_port = 80
         protocol = "tcp"
         cidr_blocks = ["${var.public_subnet_cidr}"]
     }
  
+    ingress {
+        from_port = 3000
+        to_port = 3000
+        protocol = "tcp"
+        cidr_blocks = ["${var.public_subnet_cidr}"]
+    }
+
+    ingress {
+        from_port = 9090
+        to_port = 9090
+        protocol = "tcp"
+        cidr_blocks = ["${var.public_subnet_cidr}"]
+    }
+
     ingress {
         from_port = -1
         to_port = -1
@@ -83,6 +97,6 @@ resource "aws_security_group" "db_access"{
     vpc_id = "${aws_vpc.default.id}"
 
     tags {
-        Name = "DB Node Security Group"
+        Name = "Docker Node Security Group"
     }
 }
