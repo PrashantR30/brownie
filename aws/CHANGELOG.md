@@ -1,3 +1,9 @@
+## [0.0.3] - 2018-02-11
+## - Prashant Ramhit
+1. Added - Security Groups for Docker Node 
+2. Added - Docker Node
+
+
 ## [0.0.2] - 2018-02-11
 ## - Prashant Ramhit
 1. Added - Security Groups for Web Node 
