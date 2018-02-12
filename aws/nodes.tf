@@ -16,14 +16,25 @@ resource "aws_instance" "Web_Node" {
 
 # Creates a Docker Hosts instance the private subnet
 resource "aws_instance" "Docker_Host" {
-   ami  = "${var.ami}"
-   instance_type = "t1.micro"
-   key_name = "${aws_key_pair.brownie_key_pair.id}"
-   subnet_id = "${aws_subnet.private-subnet.id}"
-   vpc_security_group_ids = ["${aws_security_group.docker_access.id}"]
-   source_dest_check = false
- 
-  tags {
-    Name = "DockerNode"
+    ami  = "${var.ami}"
+    instance_type = "t1.micro"
+    key_name = "${aws_key_pair.brownie_key_pair.id}"
+    subnet_id = "${aws_subnet.private-subnet.id}"
+    vpc_security_group_ids = ["${aws_security_group.docker_access.id}"]
+    source_dest_check = false
+    user_data = "${file("nginx_install.sh")}"
+    provisioner "file" {
+        source      = "conf/nginx.conf"
+        destination = "/etc/nginx/default.conf"
+    }
+    
+    provisioner "remote-exec" {
+    inline = [
+      "service nginx restart",
+    ]
   }
+
+    tags {
+        Name = "DockerNode"
+    }
 }
