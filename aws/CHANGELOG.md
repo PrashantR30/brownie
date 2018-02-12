@@ -1,3 +1,7 @@
+## [0.0.4] - 2018-02-12
+## - Prashant Ramhit
+1. Added - file provisioner added to DockerNode 
+2. Added - cmd  provisioner added to DockerNode 
 
 ## [0.0.3] - 2018-02-11
 ## - Prashant Ramhit
