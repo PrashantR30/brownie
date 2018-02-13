@@ -1,0 +1,36 @@
+cadvisor:
+    image: google/cadvisor:latest
+    container_name: cadvisor
+    hostname: cadvisor
+    ports:
+    - 8080:8080
+    environment:
+        volume: /var/run:/var/run:rw 
+        volume: /sys:/sys:ro 
+        volume: /var/lib/docker/:/var/lib/docker:ro
+
+container-exporter:
+    image: prom/container-exporter
+    hostname: container-exporter
+    container_name: container-exporter
+    ports:
+    - 9104:9104
+    environment:
+        volume: /sys/fs/cgroup:/cgroup
+        volume: /var/run/docker.sock:/var/run/docker.sock
+    
+prometheus:
+    image: prom/prometheus:v2.0.0
+    container_name: prometheus
+    volumes:
+      - ./prometheus/:/etc/prometheus/
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+    ports:
+      - 9090:9090
+    links:
+      - cadvisor:container-exporter

@@ -1,4 +1,4 @@
-mysql:
+mysql_db:
     image: mysql:5.7
     container_name: mysql_brownie
     ports:
@@ -9,6 +9,18 @@ mysql:
         MYSQL_USER: 'brownie'
         MYSQL_PASSWORD: 'brownie001'
     volumes:
-        - /storage/docker/mysql-datadir:/var/lib/mysqld"
-    
-     
+    - /var/lib/mysql/docker/db:/var/lib/mysqld    
+
+wordpress:
+    image: wordpress:latest
+    container_name: wordpress_brownie
+    ports:
+    - 80:80
+    links: 
+    - mysql_db
+    restart: always
+    environment:
+        WORDPRESS_DB_HOST: mysql_db:3306
+        WORDPRESS_DB_NAME: 'brownie_wp'
+        WORDPRESS_DB_USER: 'brownie_wp'
+        WORDPRESS_DB_PASSWORD: 'brownie001'    
