@@ -11,7 +11,7 @@ variable "ami" {
 
 variable "key_path" {
     description = "SSH Public Key path (generated)"
-    default = "/root/.ssh/id_brownie_rsa.pub"
+    default = "/ec2-user/.ssh/id_brownie_rsa.pub"
 }
  
 variable "vpc_cidr" {
