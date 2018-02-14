@@ -7,10 +7,30 @@ resource "aws_instance" "Web_Node" {
     subnet_id = "${aws_subnet.public-subnet.id}"
     vpc_security_group_ids = ["${aws_security_group.web_access.id}"]
     associate_public_ip_address = true
-    source_dest_check = false
+    user_data = "${file("app_install.sh")}"
+    
+    provisioner "file" {
+        source = "conf/dockers.tar.gz"
+        destination = "/tmp"
+    }
+
+    connection {
+        type = "ssh"
+        user = "ec2-user"
+    }
+
+    provisioner "remote-exec" {
+        inline = [
+            "tar -zxvf /tmp/dockers.tar.gz",
+            "chmod 775 /tmp/dockers/deploydockers.sh"
+            "/tmp/dockers/deploydockers.sh"
+        ]
+    }
+
     tags {
         Name = "WebNode"
     }
+    
 }
 
 
@@ -21,19 +41,23 @@ resource "aws_instance" "Docker_Host" {
     key_name = "${aws_key_pair.brownie_key_pair.id}"
     subnet_id = "${aws_subnet.private-subnet.id}"
     vpc_security_group_ids = ["${aws_security_group.docker_access.id}"]
-    source_dest_check = false
-    user_data = "${file("nginx_install.sh")}"
+
     provisioner "file" {
-        source      = "conf/nginx.conf"
+        source = "conf/nginx.conf"
         destination = "/etc/nginx/default.conf"
     }
     
-    provisioner "remote-exec" {
-    inline = [
-      "service nginx restart",
-    ]
-  }
+    connection {
+        type     = "ssh"
+        user     = "ec2-user"
+    }
 
+    provisioner "remote-exec" {
+        inline = [
+          "service nginx restart",
+        ]
+    }
+    
     tags {
         Name = "DockerNode"
     }
