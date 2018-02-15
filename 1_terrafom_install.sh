@@ -20,6 +20,8 @@ unzip terraform.zip
 
 # Display installed packages
 echo --------------------------- Packages Installed -------------------------------
+
 git --version
 ansible --version
 /opt/terraform/terraform -v
+
