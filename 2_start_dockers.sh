@@ -17,7 +17,6 @@ echo "Please wait... adding user to db"
 # Granting privileges
 docker exec -it mysql_brownie /usr/bin/mysql -uroot -pBrownie123 -e 'grant all privileges on brownie_wp.* to "brownie_wp"@"%" identified by "brownie001"'
 
-
 echo "User added to db.. starting all the other dockers"
 
 # Running Wordpress, Prometheus, NodeExporter and CAdvisor
