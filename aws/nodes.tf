@@ -53,7 +53,7 @@ resource "aws_instance" "Docker_Host" {
     provisioner "remote-exec" {
         inline = [
             "tar -zxvf /tmp/dockers.tar.gz",
-            "chmod 775 /tmp/dockers/deploydockers.sh"
+            "chmod 775 /tmp/dockers/deploydockers.sh",
             "/tmp/dockers/deploydockers.sh"
         ]
     }
