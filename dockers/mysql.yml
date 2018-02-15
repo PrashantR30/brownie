@@ -1,0 +1,24 @@
+version: '2'
+
+networks:
+    brownie-net:
+        driver: bridge
+volumes:
+    mysql_data: {}
+    
+services:
+    mysql_db:
+        image: mysql:5.7
+        container_name: mysql_brownie
+        hostname: mysql_brownie
+        ports: 
+            - 3306:3306
+        environment:
+            MYSQL_ROOT_PASSWORD: "Brownie123"
+            MYSQL_DATABASE: 'brownie_wp'
+            MYSQL_USER: 'brownie'
+            MYSQL_PASSWORD: 'brownie001'
+        volumes:
+            - mysql_data:/var/lib/mysql
+        networks: 
+            - brownie-net

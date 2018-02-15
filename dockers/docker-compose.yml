@@ -1,9 +1,14 @@
-version: '2'
+version: '2.0'
 
 networks:
     brownie-net:
         driver: bridge
 
+volumes:
+    mysql_data: {}
+    prometheus_data: {}
+    grafana_data: {}
+    
 services:
     mysql_db:
         image: mysql:5.7
@@ -16,14 +21,10 @@ services:
             MYSQL_DATABASE: 'brownie_wp'
             MYSQL_USER: 'brownie'
             MYSQL_PASSWORD: 'brownie001'
-            MYSQL_ROOT_HOST: '%'
         volumes:
-            - /tmp/db:/var/lib/mysqld
-            - ./mysql/grant.sh:/grant.sh
-        entrypoint: /grant.sh
+            - /var/lib/database/brownie/mysqld:/var/lib/mysqld
         networks: 
             - brownie-net
-
 
     wordpress:
         image: wordpress:latest
@@ -33,11 +34,80 @@ services:
             - 80:80
         links: 
          - mysql_db
-        restart: always
         environment:
             WORDPRESS_DB_HOST: mysql_db:3306
             WORDPRESS_DB_NAME: 'brownie_wp'
             WORDPRESS_DB_USER: 'brownie_wp'
             WORDPRESS_DB_PASSWORD: 'brownie001'
+        networks:
+            - brownie-net
+
+    nodeexporter:
+        image: prom/node-exporter:latest
+        container_name: nodeexporter
+        user: root
+        privileged: true
+        volumes:
+            - /proc:/host/proc:ro
+            - /sys:/host/sys:ro
+            - /:/rootfs:ro
+        command:
+            - '--path.procfs=/host/proc'
+            - '--path.sysfs=/host/sys'
+            - '--collector.filesystem.ignored-mount-points=^/(sys|proc|dev|host|etc)($$|/)'
+        restart: unless-stopped
+        ports:
+            - 9100:9100
+        networks:
+            - brownie-net
+
+    cadvisor:
+        image: google/cadvisor:latest
+        container_name: cadvisor
+        hostname: cadvisor
+        volumes:
+            - /:/rootfs:ro
+            - /var/run:/var/run:rw
+            - /sys:/sys:ro
+            - /var/lib/docker/:/var/lib/docker:ro
+        ports:
+          - 8080:8080
+        networks:
+          - brownie-net
+        
+    prometheus:
+        image: prom/prometheus:v2.0.0
+        container_name: prometheus
+        hostname: prometeus
+        volumes:
+            - ./prometheus/:/etc/prometheus/
+            - prometheus_data:/prometheus
+        command:
+            - '--config.file=/etc/prometheus/prometheus.yml'
+            - '--storage.tsdb.path=/prometheus'
+            - '--web.console.libraries=/etc/prometheus/console_libraries'
+            - '--web.console.templates=/etc/prometheus/consoles'
+            - '--storage.tsdb.retention=200h'
+            - '--web.enable-lifecycle'
+        # restart: unless-stopped
+        ports:
+            - 9090:9090
+        networks:
+          - brownie-net
+          
+    grafana:
+        image: grafana/grafana:latest
+        container_name: grafana
+        hostname: grafana
+        volumes:
+            - grafana_data:/var/lib/grafana
+            - ./grafana/datasources:/etc/grafana/datasources
+            - ./grafana/dashboards:/etc/grafana/dashboards
+            - ./grafana/setup.sh:/setup.sh
+        entrypoint: /setup.sh
+        environment:
+            - GF_USERS_ALLOW_SIGN_UP=false
+        ports:
+            - 3000:3000
         networks:
             - brownie-net
