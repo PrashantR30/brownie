@@ -7,10 +7,41 @@ resource "aws_instance" "Web_Node" {
     subnet_id = "${aws_subnet.public-subnet.id}"
     vpc_security_group_ids = ["${aws_security_group.web_access.id}"]
     associate_public_ip_address = true
-    user_data = "${file("app_install.sh")}"
+    user_data = "${file("web_app_install.sh")}"
     
-    provisioner "file" {
-        source = "conf/dockers.tar.gz"
+     provisioner "file" {
+        source = "conf/nginx.conf"
+        destination = "/etc/nginx/default.conf"
+    }
+    
+    connection {
+        type     = "ssh"
+        user     = "ec2-user"
+    }
+
+    provisioner "remote-exec" {
+        inline = [
+          "service nginx restart",
+        ]
+    }
+    
+    tags {
+        Name = "WebNode"
+    }
+    
+}
+
+
+# Creates a Docker Hosts instance the private subnet
+resource "aws_instance" "Docker_Host" {
+    ami  = "${var.ami}"
+    instance_type = "t1.micro"
+    key_name = "${aws_key_pair.brownie_key_pair.id}"
+    subnet_id = "${aws_subnet.private-subnet.id}"
+    vpc_security_group_ids = ["${aws_security_group.docker_access.id}"]
+    user_data = "${file("docker_app_install.sh")}"
+     provisioner "file" {
+        source = "dockers.tar.gz"
         destination = "/tmp"
     }
 
@@ -27,37 +58,6 @@ resource "aws_instance" "Web_Node" {
         ]
     }
 
-    tags {
-        Name = "WebNode"
-    }
-    
-}
-
-
-# Creates a Docker Hosts instance the private subnet
-resource "aws_instance" "Docker_Host" {
-    ami  = "${var.ami}"
-    instance_type = "t1.micro"
-    key_name = "${aws_key_pair.brownie_key_pair.id}"
-    subnet_id = "${aws_subnet.private-subnet.id}"
-    vpc_security_group_ids = ["${aws_security_group.docker_access.id}"]
-
-    provisioner "file" {
-        source = "conf/nginx.conf"
-        destination = "/etc/nginx/default.conf"
-    }
-    
-    connection {
-        type     = "ssh"
-        user     = "ec2-user"
-    }
-
-    provisioner "remote-exec" {
-        inline = [
-          "service nginx restart",
-        ]
-    }
-    
     tags {
         Name = "DockerNode"
     }
