@@ -1,6 +1,4 @@
-# Complete instructions for creating an Amazon VPC with Wordpress running on a Docker
-
-.. more to come.
+# Instructions for creating and monitoring a Wordpress Site on Amazon VPC.
 
 Brownie - Setup for brownie.turbo.mu
 ============================
@@ -33,3 +31,4 @@ On a Debian 9 (Stretch) the following will be installed:
 * Prometheus (Time Series Database) (http://brownie.turbo.mu:9090/targets)
 * NodeExporter (host metrics collector) (http://brownie.turbo.mu:9100/metrics)
 * cAdvisor (containers metrics collector) (http://brownie.turbo.mu:8080/metrics)
+
