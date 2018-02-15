@@ -1,6 +1,6 @@
 # Instructions for creating and monitoring a Wordpress Site on Amazon VPC.
 
-Brownie - Setup for brownie.turbo.mu
+Setup for brownie.turbo.mu website
 ============================
 
 This project demonstrate Infrastructure as a Code on a demo WebSite showing AWS-VPC provisioning using Terraform (https://www.terraform.io/) and Docker provisioning using Docker Compose.
