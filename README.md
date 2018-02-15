@@ -1,5 +1,10 @@
 # Instructions for creating and monitoring a Wordpress Site on Amazon VPC.
 
+Schematic Diagram:
+=====
+![Host](https://github.com/PrashantR30/brownie/blob/master/schematic_diagram.png)
+
+
 Setup for brownie.turbo.mu website
 ============================
 
