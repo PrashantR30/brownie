@@ -1,11 +1,5 @@
 # Complete instructions for creating an Amazon VPC with Wordpress running on a Docker
 
-Components:
-1. Terraform Scripts to deploy the VPC
-2. Terraform Scripts to provision the AMI
-3. Nginx Reverse Proxy config
-4. Docker files for Wordpress, Prometheus and Grafana 
-
 .. more to come.
 
 Brownie - Setup for brownie.turbo.mu
@@ -33,9 +27,9 @@ On a Debian 9 (Stretch) the following will be installed:
 * docker-compose version 1.8.0
 * Terraform v0.11.3
 
-Containers:
-* Website at `http://brownie.turbo.mu`
-* Grafana (Dashboards metrics) for Containers and Host Monitoring `http://brownie.turbo.mu:3000`
-* Prometheus (Time Series Database) `http://brownie.turbo.mu:9090/targets`
-* NodeExporter (host metrics collector) `http://brownie.turbo.mu:9100/metrics`
-* cAdvisor (containers metrics collector) `http://brownie.turbo.mu:8080/metrics`
+## Containers:
+* Website at (http://brownie.turbo.mu)
+* Grafana (Dashboards metrics) for Containers and Host Monitoring (http://brownie.turbo.mu:3000)
+* Prometheus (Time Series Database) (http://brownie.turbo.mu:9090/targets)
+* NodeExporter (host metrics collector) (http://brownie.turbo.mu:9100/metrics)
+* cAdvisor (containers metrics collector) (http://brownie.turbo.mu:8080/metrics)
