@@ -1,0 +1,18 @@
+- hosts: all
+    roles:
+      - ansible-nginx-revproxy
+    vars:
+      nginx_revproxy_sites:
+        default:
+          ssl: false
+          letsencrypt: false
+
+        example.com:
+          domains:
+            - example.com
+            - www.example.com
+          upstreams:
+           ## Add VPC Ip address in here
+          ssl: true
+          letsencrypt: false
+
