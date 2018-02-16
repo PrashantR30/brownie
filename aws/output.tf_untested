@@ -1,3 +1,4 @@
+## Untested - recovering ip addesses from Terraform output
 output "public_ip" {
   value = ["${aws_instance.*.public_ip}"]
 }
