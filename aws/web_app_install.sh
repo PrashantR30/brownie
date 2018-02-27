@@ -14,5 +14,6 @@ yum install docker
 curl -L https://github.com/docker/compose/releases/download/1.9.0/docker-compose-`uname -s`-`uname -m` | sudo tee /usr/local/bin/docker-compose > /dev/null
 sudo chmod +x /usr/local/bin/docker-compose
 
+# Starting Docker
 systemctl enable docker.service
 systemctl start docker
